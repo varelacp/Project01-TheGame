@@ -16,4 +16,6 @@ body {
   width: 1200px;
   height: 800px;
   border: 4px solid black;
+  /*  background: linear-gradient(to bottom, color, color, color ) */
+  /* example for the background */
 }
