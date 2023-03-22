@@ -1,38 +1,51 @@
 class Balloon {
-  constructor(width, heigth, x, y) {
+  constructor(x, y, ctx) {
     // Set the initial position of the balloon
-    this.x = 50;
-    this.y = 500;
-    this.width = width;
-    this.heigth = heigth;
+    this.x = x;
+    this.y = y;
+    this.width = 130;
+    this.heigth = 222;
+    this.lives = 5;
+    this.isGameOver = false;
+    this.moving = true;
     this.loaded = false;
+    this.img = null;
+    this.ctx = ctx;
 
     // Create an Image object for the balloon image
     const img = new Image();
-    img.addEventListener('load', () => {
+    img.onload = () => {
       // Once the image is loaded, set the loaded flag and draw the balloon
       this.loaded = true;
       this.img = img;
       this.draw();
+    };
+    img.src = './images/airballoon_01.png';
+  }
+
+  /* img.addEventListener('load', () => {
+      
+    }); */
+
+  /*  canvas.addEventListener('mousedown', event => {
+      if (
+        event.clientX >= this.x &&
+        event.clientX <= this.x + this.width &&
+        event.clientY >= this.y + this.heigth
+      ) {
+        console.log('Runnig');
+        this.isMoving = true;
+      }
     });
-    img.src = '../Images/airballoon_01.png';
-  }
+    canvas.addEventListener('mousemove', event => {
+      this.isMoving = false;
+    }); */
 
-  draw() {
-    // Only draw the balloon if the image is loaded
-
-    if (!this.loaded) {
-      return;
-    }
-
-    // Draw the balloon image at its current position on the canvas
-    ctx.drawImage(this.img, this.x, this.y, 130, 222);
-  }
-  move(x, y) {
+  /*  move() {
     this.x = x;
     this.y = y;
-  }
-  update() {
+  } */
+  update = () => {
     const dx = this.x - mouse.x;
     const dy = this.y - mouse.y;
     if (mouse.x != this.x) {
@@ -43,7 +56,10 @@ class Balloon {
       this.y -= dy / 20;
       this.moving = true;
     }
-  }
+    this.y += 10;
+
+    /* this; */
+  };
   left = () => {
     return this.x;
   };
@@ -59,12 +75,33 @@ class Balloon {
   bottom = () => {
     return this.y + this.heigth;
   };
-  collisionWith = balloon => {
-    return !(
-      this.bottom() < balloon.top() ||
-      this.top() > balloon.bottom() ||
-      this.right() < balloon.left() ||
-      this.left() > balloon.right()
-    );
-  };
+
+  draw() {
+    // Only draw the balloon if the image is loaded
+    if (!this.loaded) return;
+    ctx.drawImage(this.img, this.x, this.y, 130, 222);
+  }
+
+  update() {
+    if (this.isGameOver) {
+      return;
+    }
+    this.x = Math.min(Math.max(this.x, 0), canvas.width - this.width);
+    this.lives--;
+  }
+  restart() {
+    this.lives = 5;
+    this.isGameOver = false;
+  }
+  checkCollissionWith(obstacle) {
+    // check if player collides with obstacle
+    if (
+      this.x < obstacle.x + obstacle.width &&
+      this.x + this.width > obstacle.x &&
+      this.y < obstacle.y + obstacle.height &&
+      this.y + this.height > obstacle.y
+    ) {
+      this.isGameOver = true;
+    }
+  }
 }
