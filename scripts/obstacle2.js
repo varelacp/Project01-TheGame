@@ -1,54 +1,87 @@
 class Obstacle2 {
-  constructor(x, type, y, width, height) {
+  static aspectRatio = 0.6;
+  constructor(x, y, type, width, height) {
     this.x = x;
     this.y = y;
     this.type = type;
     this.width = width;
     this.height = height;
     this.speed = 2;
-    this.image = new Image();
-    this.image.onload = () => {
-      this.width = width || this.image.width;
-      this.height = height || this.image.height;
-    };
+    this.image = null;
+    this.imageLoaded = false;
+    this.getBuildingImage(type);
+  }
+  getBuildingImage(type) {
+    let image = new Image();
+    const aspectRatio = Obstacle2.aspectRatio;
     if (type === 'building1') {
-      this.image.onload = () => {
-        this.width = 240;
-        this.height = 150;
+      image.onload = () => {
+        this.width = 240 * aspectRatio;
+        this.height = 160 * aspectRatio;
+        this.imageLoaded = true;
       };
-      this.image.src = '../images/house_01.png';
+      image.src = '../images/padrao_01.png';
     } else if (type === 'building2') {
-      this.image.onload = () => {
-        this.width = 240;
-        this.height = 160;
+      image.onload = () => {
+        this.width = 240 * aspectRatio;
+        this.height = 150 * aspectRatio;
+        this.imageLoaded = true;
       };
-      this.image.src = '../images/padrao_01.png';
+      image.src = '../images/house_01.png';
     } else if (type === 'building3') {
-      this.image.onload = () => {
-        this.width = 200;
-        this.height = 210;
+      image.onload = () => {
+        this.width = 200 * aspectRatio;
+        this.height = 210 * aspectRatio;
+        this.imageLoaded = true;
       };
-      this.image.src = '../images/se_01.png';
+      image.src = '../images/se_01.png';
     } else if (type === 'building4') {
-      this.image.onload = () => {
-        this.width = 200;
-        this.height = 256;
+      image.onload = () => {
+        this.width = 200 * aspectRatio;
+        this.height = 256 * aspectRatio;
+        this.imageLoaded = true;
       };
-      this.image.src = '../images/torre_vasco_gama_01.png';
+      image.src = '../images/torre_vasco_gama_01.png';
     }
+    this.image = image;
+  }
+  getBoundingBox() {
+    const aspectRatio = Obstacle2.aspectRatio;
+    return {
+      x: this.x - this.width / 2,
+      y: this.y - this.height,
+      width: this.width,
+      height: this.height * (1 + aspectRatio)
+    };
   }
 
   draw() {
-    ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    if (!this.imageLoaded) {
+      return;
+    }
+    ctx.drawImage(
+      this.image,
+      this.x - this.width / 2,
+      this.y - this.height,
+      this.width,
+      this.height
+    );
     this.x -= 10;
   }
-
-  update() {
-    // move obstacle left
+  move() {
     this.x -= this.speed;
   }
 
   isOutOfScreen() {
     return this.y > canvas.clientHeight;
+  }
+
+  collidesWith(balloon) {
+    return (
+      this.x - this.width / 2 < balloon.x + balloon.width / 2 &&
+      this.x + this.width / 2 > balloon.x - balloon.width / 2 &&
+      this.y + this.height / 2 > balloon.y - balloon.height / 2 &&
+      this.y - this.height / 2 < balloon.y + balloon.height / 2
+    );
   }
 }
