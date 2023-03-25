@@ -107,7 +107,7 @@ class Game {
     setInterval(() => {
       const type = types[Math.floor(Math.random() * types.length)];
       const x = Math.random() * (canvas.width - 50);
-      const obstacle = new Obstacle1(1500, 50, type);
+      const obstacle = new Obstacle1(1500, 300, type);
       this.obstacles1.push(obstacle);
     }, 1500);
   }
