@@ -30,7 +30,7 @@ window.addEventListener('mouseup', function (e) {
 class Game {
   constructor() {
     this.balloon = new Balloon(50, 530, ctx);
-
+    this.interval = undefined;
     this.obstacles1 = [];
     this.obstacles2 = [];
     this.isGameOver = true;
@@ -47,9 +47,30 @@ class Game {
     this.update();
   }
 
-  update() {
+  start = () => {
+    this.interval = setInterval(this.update(), 20);
+  };
+  stop = () => {
+    clearInterval(this.interval);
+  };
+
+  gameOver() {
+    this.isGameOver = true;
+    ctx.font = '30px Arial';
+    ctx.fillText('Game Over', canvas.width / 2 - 70, canvas.height / 2);
+    ctx.fillText(
+      `Final Lives: ${this.lives}`,
+      canvas.width / 2 - 90,
+      canvas.height / 2 + 40
+    );
+    this.lives = 0;
+
+    // Show restart button
+    this.showRestartButton();
+  }
+
+  update = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    console.log(this.lives);
     // this.balloon.move();
     handleBackground();
     this.balloon.draw();
@@ -91,8 +112,8 @@ class Game {
     }
 
     if (this.lives <= 0) {
+      this.isGameOver = true;
       this.gameOver();
-      this.gameOver = true;
     } else {
       ctx.font = '20px Arial';
       ctx.fillText(`Lives: ${this.lives}`, 10, 30);
@@ -100,7 +121,7 @@ class Game {
         requestAnimationFrame(() => this.update());
       }, 1000 / 60);
     }
-  }
+  };
 
   generateObstacles1() {
     const types = ['bird', 'airplane'];
@@ -144,21 +165,6 @@ class Game {
     }, 3000);
   } */
 
-  gameOver() {
-    this.isGameOver = true;
-    ctx.font = '30px Arial';
-    ctx.fillText('Game Over', canvas.width / 2 - 70, canvas.height / 2);
-    ctx.fillText(
-      `Final Lives: ${5 - this.lives}`,
-      canvas.width / 2 - 90,
-      canvas.height / 2 + 40
-    );
-    this.lives = 0;
-
-    // Show restart button
-    this.showRestartButton();
-  }
-
   showRestartButton() {
     const restartBtn = document.getElementById('restart-btn');
     restartBtn.style.display = 'block';
@@ -173,16 +179,17 @@ class Game {
     restartBtn.style.display = 'none';
   }
 
-  restart() {
+  restart = () => {
     this.isGameOver = false;
-    this.lives = 0;
-    this.balloon.restart();
+
+    clearInterval(this.interval);
+
+    this.lives = 5;
     this.obstacles1 = [];
     this.obstacles2 = [];
-    this.generateObstacles1();
-    this.generateObstacles2();
-    this.update();
-  }
+
+    this.start();
+  };
 }
 
 const game = new Game();

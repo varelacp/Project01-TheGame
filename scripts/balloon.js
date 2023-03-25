@@ -7,7 +7,7 @@ class Balloon {
     this.height = 222;
     this.speed = 2;
     this.lives = 5;
-    this.gameOver = true;
+    this.isGameOver = true;
     this.moving = true;
     this.loaded = false;
     this.img = null;
@@ -89,7 +89,7 @@ class Balloon {
   restart() {
     this.x = 50;
     this.y = -500;
-    this.gameOver = false;
+    this.isGameOver = false;
   }
 
   move(mouseX, mouseY) {
