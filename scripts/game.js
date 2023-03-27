@@ -27,10 +27,15 @@ window.addEventListener('mouseup', function (e) {
   mouse.click = false;
 });
 
+const restartBtn = document.getElementById('restart-btn');
 const startBtn = document.getElementById('start-btn');
 startBtn.addEventListener('click', () => {
   game.start();
   startBtn.style.display = 'none';
+});
+restartBtn.addEventListener('click', () => {
+  game.restart();
+  restartBtn.style.display = 'none';
 });
 
 class Game {
@@ -41,6 +46,7 @@ class Game {
     this.obstacles2 = [];
     this.isGameOver = true;
     this.lives = 5;
+    this.frames = 0;
 
     canvas.addEventListener('click', () => {
       if (this.isGameOver) {
@@ -80,7 +86,9 @@ class Game {
   }
 
   update = () => {
+    this.isGameOver = false;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    this.hideRestartButton();
     // this.balloon.move();
     handleBackground();
     this.balloon.draw();
@@ -91,6 +99,7 @@ class Game {
       const obstacle = this.obstacles1[i];
       obstacle.move();
       obstacle.draw();
+      this.frames += 1;
       if (this.balloon.checkCollisionWith(obstacle)) {
         this.obstacles1.splice(i, 1);
         this.lives -= 1;
@@ -108,6 +117,7 @@ class Game {
       const obstacle = this.obstacles2[i];
       obstacle.move();
       obstacle.draw();
+      this.frames += 1;
       if (this.balloon.checkCollisionWith(obstacle)) {
         this.obstacles2.splice(i, 1);
         this.lives -= 1;
@@ -196,17 +206,10 @@ class Game {
   } */
 
   showRestartButton() {
-    const restartBtn = document.getElementById('restart-btn');
     restartBtn.style.display = 'block';
-    restartBtn.addEventListener('click', () => {
-      restartBtn.style.display = 'none';
-      canvas.appendChild(restartBtn);
-      this.restart();
-    });
   }
 
   hideRestartButton() {
-    const restartBtn = document.getElementById('restartBtn');
     restartBtn.style.display = 'none';
   }
 
