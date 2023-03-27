@@ -8,10 +8,22 @@
     <title>The Vintage Jorney</title>
   </head>
   <body>
-    <canvas id="game" width="1200" height="800"></canvas>
+    <div
+      class="canvas-wrapper"
+      style="
+        position: relative;
+        width: 1200px;
+        height: 800px;
+        background-image: url('/images/intro-image_01_v02.png');
+      "
+    >
+      <canvas id="game" width="1200" height="800"></canvas>
 
-    <button id="restart-btn" style="display: none">Restart</button>
-
+      <div class="buttons">
+        <button id="start-btn">Start Game</button>
+        <button id="restart-btn" style="display: none">Restart</button>
+      </div>
+    </div>
     <script src="/scripts/balloon.js"></script>
     <script src="/scripts/obstacle1.js"></script>
     <script src="/scripts/obstacle2.js"></script>

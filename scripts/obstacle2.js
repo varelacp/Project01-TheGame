@@ -16,29 +16,29 @@ class Obstacle2 {
     const aspectRatio = Obstacle2.aspectRatio;
     if (type === 'building1') {
       image.onload = () => {
-        this.width = 240 * aspectRatio;
-        this.height = 160 * aspectRatio;
+        this.width = 360 * aspectRatio;
+        this.height = 245 * aspectRatio;
         this.imageLoaded = true;
       };
       image.src = '../images/padrao_01.png';
     } else if (type === 'building2') {
       image.onload = () => {
-        this.width = 240 * aspectRatio;
-        this.height = 150 * aspectRatio;
+        this.width = 360 * aspectRatio;
+        this.height = 220 * aspectRatio;
         this.imageLoaded = true;
       };
       image.src = '../images/house_01.png';
     } else if (type === 'building3') {
       image.onload = () => {
-        this.width = 200 * aspectRatio;
-        this.height = 210 * aspectRatio;
+        this.width = 295 * aspectRatio;
+        this.height = 320 * aspectRatio;
         this.imageLoaded = true;
       };
       image.src = '../images/se_01.png';
     } else if (type === 'building4') {
       image.onload = () => {
-        this.width = 200 * aspectRatio;
-        this.height = 256 * aspectRatio;
+        this.width = 320 * aspectRatio;
+        this.height = 512 * aspectRatio;
         this.imageLoaded = true;
       };
       image.src = '../images/torre_vasco_gama_01.png';

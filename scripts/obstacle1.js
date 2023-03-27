@@ -16,7 +16,7 @@ class Obstacle1 {
     this.img = new Image();
     if (type === 'bird') {
       this.image.onload = () => {
-        this.width = 78;
+        this.width = 50;
       };
       this.image.src = '../images/airplane_200x52px_01.png';
     } else if (type === 'airplane') {

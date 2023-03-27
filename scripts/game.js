@@ -27,6 +27,12 @@ window.addEventListener('mouseup', function (e) {
   mouse.click = false;
 });
 
+const startBtn = document.getElementById('start-btn');
+startBtn.addEventListener('click', () => {
+  game.start();
+  startBtn.style.display = 'none';
+});
+
 class Game {
   constructor() {
     this.balloon = new Balloon(50, 530, ctx);
@@ -44,7 +50,7 @@ class Game {
 
     this.generateObstacles1();
     this.generateObstacles2();
-    this.update();
+    /*   this.update(); */
   }
 
   start = () => {
@@ -57,7 +63,11 @@ class Game {
   gameOver() {
     this.isGameOver = true;
     ctx.font = '30px Arial';
-    ctx.fillText('Game Over', canvas.width / 2 - 70, canvas.height / 2);
+    ctx.fillText(
+      'The Journey is Over!',
+      canvas.width / 2 - 70,
+      canvas.height / 2
+    );
     ctx.fillText(
       `Final Lives: ${this.lives}`,
       canvas.width / 2 - 90,
@@ -129,6 +139,26 @@ class Game {
       const type = types[Math.floor(Math.random() * types.length)];
       const x = Math.random() * (canvas.width - 50);
       const obstacle = new Obstacle1(1500, 300, type);
+
+      // Check if the new obstacle overlaps with any of the existing obstacles
+      let overlap = true;
+      while (overlap) {
+        overlap = false;
+        for (let i = 0; i < this.obstacles1.length; i++) {
+          const existingObstacle = this.obstacles1[i];
+          const distance = Math.sqrt(
+            Math.pow(obstacle.x - existingObstacle.x, 2) +
+              Math.pow(obstacle.y - existingObstacle.y, 2)
+          );
+          if (distance < obstacle.width + existingObstacle.width + 20) {
+            overlap = true;
+            obstacle.x = Math.random() * (canvas.width - 50);
+            obstacle.y = Math.random() * (canvas.height - 50);
+            break;
+          }
+        }
+      }
+
       this.obstacles1.push(obstacle);
     }, 1500);
   }
@@ -170,6 +200,7 @@ class Game {
     restartBtn.style.display = 'block';
     restartBtn.addEventListener('click', () => {
       restartBtn.style.display = 'none';
+      canvas.appendChild(restartBtn);
       this.restart();
     });
   }
