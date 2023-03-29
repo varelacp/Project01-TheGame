@@ -13,6 +13,7 @@ background.src = '../images/land-sky_01.png';
 function handleBackground() {
   ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 }
+
 const mouse = {
   x: 50,
   y: 500,
@@ -44,6 +45,7 @@ class Game {
     this.interval = undefined;
     this.obstacles1 = [];
     this.obstacles2 = [];
+
     this.isGameOver = true;
     this.lives = 5;
     this.frames = 0;
@@ -68,16 +70,18 @@ class Game {
 
   gameOver() {
     this.isGameOver = true;
-    ctx.font = '30px Arial';
+    ctx.font = 'bold 30px Poppins';
+    ctx.fillStyle = 'brown';
     ctx.fillText(
       'The Journey is Over!',
-      canvas.width / 2 - 70,
-      canvas.height / 2
+      canvas.width / 2 - 140,
+      canvas.height / 4 - 100
     );
+    ctx.fillStyle = 'brown';
     ctx.fillText(
       `Final Lives: ${this.lives}`,
       canvas.width / 2 - 90,
-      canvas.height / 2 + 40
+      canvas.height / 5
     );
     this.lives = 0;
 
@@ -91,7 +95,7 @@ class Game {
     this.hideRestartButton();
     // this.balloon.move();
     handleBackground();
-    this.balloon.draw();
+    this.balloon.draw(50, 530, ctx);
 
     this.balloon.update();
 
@@ -108,10 +112,7 @@ class Game {
       if (obstacle.isOutOfScreen() && !this.balloon.isGameOver) {
         this.obstacles1.splice(i, 1);
         i--;
-      } /* else if (obstacle.collidesWith(this.balloon)) {
-        this.balloon.isGameOver = true;
-        break;
-      } */
+      }
     }
     for (let i = 0; i < this.obstacles2.length; i++) {
       const obstacle = this.obstacles2[i];
@@ -125,10 +126,7 @@ class Game {
       if (obstacle.isOutOfScreen() && !this.balloon.isGameOver) {
         this.obstacles2.splice(i, 1);
         i--;
-      } /* else if (obstacle.collidesWith(this.balloon)) {
-        this.balloon.isGameOver = true;
-        break;
-      } */
+      }
     }
 
     if (this.lives <= 0) {
@@ -150,25 +148,6 @@ class Game {
       const x = Math.random() * (canvas.width - 50);
       const obstacle = new Obstacle1(1500, 300, type);
 
-      // Check if the new obstacle overlaps with any of the existing obstacles
-      let overlap = true;
-      while (overlap) {
-        overlap = false;
-        for (let i = 0; i < this.obstacles1.length; i++) {
-          const existingObstacle = this.obstacles1[i];
-          const distance = Math.sqrt(
-            Math.pow(obstacle.x - existingObstacle.x, 2) +
-              Math.pow(obstacle.y - existingObstacle.y, 2)
-          );
-          if (distance < obstacle.width + existingObstacle.width + 20) {
-            overlap = true;
-            obstacle.x = Math.random() * (canvas.width - 50);
-            obstacle.y = Math.random() * (canvas.height - 50);
-            break;
-          }
-        }
-      }
-
       this.obstacles1.push(obstacle);
     }, 1500);
   }
@@ -188,22 +167,8 @@ class Game {
         this.yPositions[Math.floor(Math.random() * this.yPositions.length)];
       const obstacle = new Obstacle2(x, y, type, width, height);
       this.obstacles2.push(obstacle);
-    }, 2000); // decrease the interval to 1000 milliseconds (1 second)
+    }, 2000); // decrease the interval to 2000 milliseconds (1 second)
   }
-  /*  this.types = ['building1', 'building2', 'building3', 'building4'];
-    this.widths = [240, 240, 200, 200];
-    this.heights = [150, 160, 210, 256];
-
-    setInterval(() => {
-      const type = this.types[Math.floor(Math.random() * this.types.length)];
-      const width = this.widths[this.types.indexOf(type)];
-      const height = this.heights[this.types.indexOf(type)];
-      const x = Math.random() * (canvas.width - width);
-      const y = canvas.height - height;
-      const obstacle = new Obstacle2(x, y, type, width, height);
-      this.obstacles2.push(obstacle);
-    }, 3000);
-  } */
 
   showRestartButton() {
     restartBtn.style.display = 'block';

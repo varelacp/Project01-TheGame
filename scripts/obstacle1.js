@@ -4,8 +4,8 @@ class Obstacle1 {
     this.y = y;
     this.type = type;
     this.height = 20;
-    this.clientWidth = 100;
-    this.clientHeight = 100;
+    this.clientWidth = 143;
+    this.clientHeight = 48;
     this.speed = 2;
     this.boundingBox = { x: x, y: y, width: 0, height: 0 };
     this.image = new Image();
@@ -18,12 +18,12 @@ class Obstacle1 {
       this.image.onload = () => {
         this.width = 50;
       };
-      this.image.src = '../images/airplane_200x52px_01.png';
+      this.image.src = '../images/bird_285x95px_03.png';
     } else if (type === 'airplane') {
       this.image.onload = () => {
         this.width = 78;
       };
-      this.image.src = '../images/bird_100x94px_02.png';
+      this.image.src = '../images/airplane_285x95px_02.png';
     }
   }
   getBoundingBox() {
@@ -79,10 +79,5 @@ class Obstacle1 {
     const distance = Math.sqrt(dx * dx + dy * dy);
 
     return distance < balloon.radius;
-    /*  return (
-      this.x - this.width / 2 < balloon.x + balloon.width / 2 &&
-      this.x + this.width / 2 > balloon.x - balloon.width / 2 &&
-      this.y + this.height / 2 > balloon.y - balloon.height / 2 &&
-      this.y + this.height / 2 > balloon.y - balloon.height / 2 */
   }
 }

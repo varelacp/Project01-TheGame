@@ -1,6 +1,5 @@
 class Balloon {
   constructor(x, y, ctx) {
-    // Set the initial position of the balloon
     this.x = x;
     this.y = y;
     this.width = 130;
@@ -58,13 +57,6 @@ class Balloon {
       width: obstacle.width - 20,
       height: obstacle.height - 20
     };
-
-    /* return (
-      balloonBox.x < obstacleBox.x + obstacleBox.width &&
-      balloonBox.x + balloonBox.width > obstacleBox.x &&
-      balloonBox.y < obstacleBox.y + obstacleBox.height &&
-      balloonBox.y + balloonBox.height > obstacleBox.y
-    ); */
 
     console.log('width ', obstacle.width);
     console.log('height', obstacle.height);
